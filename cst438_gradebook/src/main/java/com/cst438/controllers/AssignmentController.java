@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import com.cst438.domain.Assignment;
+import com.cst438.domain.AssignmentGradeRepository;
 import com.cst438.domain.AssignmentRepository;
 import com.cst438.domain.Course;
 import com.cst438.domain.CourseRepository;
@@ -30,19 +31,22 @@ public class AssignmentController {
 
     @Autowired
     private CourseRepository courseRepository;
+    
+    @Autowired
+    AssignmentGradeRepository assignmentGradeRepository;
 
     @PostMapping("/new")
     @Transactional
-    public Assignment addAssignment(@RequestParam("courseId") int courseId,
-                                    @RequestParam("name") String name,
-                                    @RequestParam("dueDate") String date) {
+    public Assignment createAssignment(@RequestParam("courseId") int courseId,
+                                       @RequestParam("name") String name,
+                                       @RequestParam("dueDate") String date) {
         Course course = courseRepository.findById(courseId).orElse(null);
         if (course != null) {
             Assignment assignment = new Assignment();
             assignment.setDueDate(Date.valueOf(date));
             assignment.setName(name);
             assignment.setCourse(course);
-            assignment.setNeedsGrading(2);
+            assignment.setNeedsGrading(1);
             return assignmentRepository.save(assignment);
         } else {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Can't change course ID " + courseId);
@@ -51,8 +55,8 @@ public class AssignmentController {
 
     @PutMapping("/update/{assignmentId}")
     @Transactional
-    public Assignment updateAssignment(@PathVariable("assignmentId") int assignmentId,
-                                       @RequestParam("name") String name) {
+    public Assignment changeAssignmentName(@PathVariable("assignmentId") int assignmentId,
+                                           @RequestParam("name") String name) {
         Assignment assignment = assignmentRepository.findById(assignmentId).orElse(null);
         if (assignment != null) {
             assignment.setName(name);
@@ -78,6 +82,3 @@ public class AssignmentController {
         }
     }
 }
-
-
-
