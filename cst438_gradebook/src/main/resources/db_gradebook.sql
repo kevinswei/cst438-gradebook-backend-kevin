@@ -1,4 +1,4 @@
--- script to create gradebook database with sample data
+--  script to create gradebook database with sample data
 create schema gradebook;
 
 use gradebook;
@@ -61,3 +61,4 @@ CREATE TABLE `assignment_grade` (
   CONSTRAINT `FKaxh9254n4nfmxxxovn8g591y7` FOREIGN KEY (`enrollment_id`) REFERENCES `enrollment` (`id`),
   CONSTRAINT `FKph33axj4dnucgpe69qif06dlj` FOREIGN KEY (`assignment_id`) REFERENCES `assignment` (`id`)
 );
+
